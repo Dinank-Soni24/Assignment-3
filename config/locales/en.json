@@ -1,0 +1,9 @@
+{
+	"Welcome": "Welcome",
+	"A brand new app.": "A brand new app.",
+	"user.created": "user created successfully",
+	"user.exists": "user already exists",
+	"user.imagenotfound": "please upload profile picture",
+	"user.notfound": "email or password is invalid",
+	"user.found": "logging successfully"
+}
