@@ -7,6 +7,7 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 const bcrypt = require('bcrypt');
+const { follow } = require('./ProfileController');
 
 module.exports = {
 
@@ -41,7 +42,10 @@ module.exports = {
                             userName,
                             email,
                             password: hashedPassword,
-                            profilePic: avatarFd
+                            profilePic: avatarFd,
+                            followers: {},
+                            following: {}
+
                         }).fetch();
                         return res.json({
                             message: sails.__(`user.created`, { lang }),
