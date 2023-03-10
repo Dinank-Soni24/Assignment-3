@@ -8,6 +8,7 @@
  * https://sailsjs.com/docs/concepts/policies
  */
 
+
 module.exports.policies = {
 
   /***************************************************************************
@@ -18,5 +19,15 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
+
+  // postController: {
+  //   "postAdd": "isLoggedIn"
+  // }
+  adminController: {
+    "*": "isAdmin"
+  },
+  UserController: {
+    'logout': 'isLoggedIn'
+  }
 
 };

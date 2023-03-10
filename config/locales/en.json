@@ -6,5 +6,9 @@
 	"user.imagenotfound": "please upload profile picture",
 	"user.notfound": "email or password is invalid",
 	"user.found": "logging successfully",
-	"post.created": "post.created"
+	"post.created": "post.created",
+	"logoutSuccessful": "logoutSuccessful",
+	"user.picUpdate": "user.picUpdate",
+	"can not logout": "can not logout",
+	"user.inActive": "user.inActive"
 }

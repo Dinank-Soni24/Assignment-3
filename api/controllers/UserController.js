@@ -7,7 +7,6 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 const bcrypt = require('bcrypt');
-const { follow } = require('./ProfileController');
 
 module.exports = {
 
@@ -17,7 +16,7 @@ module.exports = {
             // Get the user's preferred language
             const lang = req.getLocale();
 
-            const { userName, email, password, } = req.body;
+            const { userName, email, password, roles } = req.body;
 
             // Upload the profilePic image
             req.file('profilePic').upload({
@@ -44,7 +43,9 @@ module.exports = {
                             password: hashedPassword,
                             profilePic: avatarFd,
                             followers: {},
-                            following: {}
+                            following: {},
+                            roles,
+                            status: 'Active'
 
                         }).fetch();
                         return res.json({
@@ -88,17 +89,23 @@ module.exports = {
                         message: sails.__(`user.notfound`, { lang })
                     }
                 });
+            } else if (user.status === 'inActive') {
+                return res.status(500).json({
+                    message: {
+                        message: sails.__(`user.inActive`, { lang })
+                    }
+                });
             } else {
                 //check the password
                 const checkPassword = await bcrypt.compare(req.body.password, user.password);
 
-                if (checkPassword === true)
-                {
+                if (checkPassword === true) {
                     try {
-                        const token = await sails.helpers.generateToken(email, password, "3m")
-                        console.log(token);
+                        const token = await sails.helpers.generateToken(email, password, "1h")
+                        // console.log(token);
                         const userUpdate = await User.updateOne({ email }, { token: token })
-    
+                        // console.log(userUpdate);
+
                     } catch (error) {
                         return "error"
                     }
@@ -114,7 +121,33 @@ module.exports = {
 
 
         } catch (error) {
+            return res.status(500).json({ error: error });
+        }
+    },
 
+    logout: async (req, res) => {
+
+        // Get the user's preferred language
+        const lang = req.getLocale();
+        try {
+
+
+            // // // get user id from link
+            // const { id } = await req.params;
+
+            // const user = await User.findOne({ email: req.userData.email });
+
+            const userUpdate = await User.updateOne({ email: req.userData.email }, { token: "" });
+            console.log(userUpdate);
+
+            res.status(200).json({
+                message: sails.__('logoutSuccessful', { lang: lang })
+            })
+        } catch (error) {
+            res.status(200).json({
+                message: sails.__('can not logout', { lang: lang }),
+                error: error
+            })
         }
     }
 };

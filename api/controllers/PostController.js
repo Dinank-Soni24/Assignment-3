@@ -112,11 +112,10 @@ module.exports = {
             const user = await User.findOne({ id: userId });
             // const keys = Object.keys(post.comment);
 
-
-            post.comment[userId] = `@${user.userName} comment on your post:-  ${comments}`
-
-            //set the post
-            await Post.updateOne({ id: postId }).set(post);
+            const newCommnet = await Comment.create({
+                text: `@${user.userName}  ${comments}`,
+                onPost: postId
+            }).fetch()
 
             return res.json({
                 post: {
@@ -125,7 +124,25 @@ module.exports = {
             });
 
         } catch (error) {
-            return res.status(500).json({ error: error + "hello" });
+            return res.status(500).json({ error: error});
+        }
+    },
+
+    getPost: async (req, res) => {
+
+        try {
+            const limit = req.query.limit || 2;
+            const skip = req.query.skip || 0;
+
+            const post = await Post.find({ sort: 'publishedDate DESC', limit: limit, skip: skip});
+
+            res.status(200).json({
+                count: post.length,
+                Posts: post
+            });
+
+        } catch (error) {
+            return res.status(500).json({ error: error });
         }
     }
 };

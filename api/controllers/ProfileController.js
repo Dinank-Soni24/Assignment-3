@@ -38,6 +38,108 @@ module.exports = {
 
     },
 
+    passwordUpdate: async (req, res) => {
+
+        try {
+            const id = req.params.id;
+            const password = req.body.password;
+
+            const user = await User.findOne({ id: id });
+
+            await User.updateOne({ id: id }, { password: password });
+
+            return res.json({
+                user: {
+                    message: 'password update successfully'
+                }
+            });
+
+        } catch (error) {
+            return res.status(500).json({ error: error + "hello" });
+        }
+    },
+
+    picUpdate: async (req, res) => {
+
+        try {
+
+            // Get the user's preferred language
+            const lang = req.getLocale();
+            const id = req.params.id;
+
+            req.file('profilePic').upload({
+                maxBytes: 10000000
+            }, async (err, uploadedFiles) => {
+                if (err) {
+                    return res.serverError(err);
+                } else {
+                    if (uploadedFiles.length > 0) {
+                        const pictureFd = await uploadedFiles[0].fd;
+
+                        try {
+                            await User.updateOne({ id: id }, { profilePic: pictureFd });
+
+                            return res.json({
+                                message: sails.__(`user.picUpdate`, { lang }),
+                            });
+                        } catch (error) {
+                            return res.json({
+                                error: error + "hello"
+                            })
+                        }
+                    } else {
+                        return res.status(500).json({
+                            message: {
+                                message: sails.__(`post.imagenotfound`, { lang })
+                            }
+                        });
+                    }
+                }
+            })
+
+        } catch (error) {
+            return res.status(500).json({ error: error });
+        }
+    },
+
+    followers: async (req, res) => {
+
+        try {
+            
+            const userId = await req.params.id;
+
+            //find user
+            const user = await User.findOne({ id: userId });
+
+            res.status(200).json({
+                count: user.followers.length,
+                followers: Object.values(user.followers)
+            });
+
+        } catch (error) {
+            return res.status(500).json({ error: error + 'hello'});
+        }
+    },
+
+    following: async (req, res) => {
+
+        try {
+            
+            const userId = await req.params.id;
+
+            //find user
+            const user = await User.findOne({ id: userId });
+
+            res.status(200).json({
+                count: user.following.length,
+                following: Object.values(user.following)
+            });
+
+        } catch (error) {
+            return res.status(500).json({ error: error + 'hello'});
+        }
+    },
+
     follow: async (req, res) => {
 
         try {

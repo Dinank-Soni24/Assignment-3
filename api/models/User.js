@@ -5,7 +5,7 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
-const { Roles } = sails.config.constant;
+const { Roles, Status } = sails.config.constant;
 
 
 module.exports = {
@@ -47,10 +47,21 @@ module.exports = {
     {
       type: 'json',
     },
+    //one-to-many with post(many)
     posts:
     {
       collection: 'post',
       via: 'createdBy',
+    },
+    token:
+    {
+      type: 'string',
+    },
+    status: 
+    {
+      type: "string",
+      isIn: [Status.Active, Status.inActive],
+      defaultsTo: Roles.Active,
     }
     
 
