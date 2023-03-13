@@ -13,29 +13,29 @@ module.exports = {
   attributes: {
     userName: 
     {
-      type: "string",
+      type: 'string',
       required: true,
       unique: true
     },
     email:
     {
-      type: "string",
+      type: 'string',
       required: true,
       unique: true
     },
     password:
     {
-      type: "string",
+      type: 'string',
       required: true,
     },
     profilePic:
     {
-      type: "string",
+      type: 'string',
       required: true,
     },
     roles:
     {
-      type: "string",
+      type: 'string',
       isIn: [Roles.Admin, Roles.User],
       defaultsTo: Roles.User
     },
@@ -59,7 +59,7 @@ module.exports = {
     },
     status: 
     {
-      type: "string",
+      type: 'string',
       isIn: [Status.Active, Status.inActive],
       defaultsTo: Roles.Active,
     }

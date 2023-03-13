@@ -11,17 +11,17 @@ module.exports = {
 
     title:
     {
-      type: "string",
+      type: 'string',
       required: true,
     },
     content:
     {
-      type: "string",
+      type: 'string',
       required: true
     },
     image:
     {
-      type: "string",
+      type: 'string',
     },
     like:
     {
@@ -34,7 +34,7 @@ module.exports = {
     },
     publishedDate:
     {
-      type: "number",
+      type: 'number',
       defaultsTo: Date.now()
     },
     //one-to-many with comment(many)

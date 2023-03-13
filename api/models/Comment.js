@@ -11,7 +11,7 @@ module.exports = {
 
     text:
     {
-      type: "string",
+      type: 'string',
       required: true,
     },
     //one-to-many with post(one)
