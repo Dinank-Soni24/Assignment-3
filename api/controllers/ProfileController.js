@@ -22,8 +22,8 @@ module.exports = {
           email: user.email,
           profilePic: user.profilePic,
           roles: user.roles,
-          followers: user.followers,
-          following: user.following,
+          followers: Object.values(user.followers).length,
+          following: Object.values(user.following).length,
         },
       });
     } catch (error) {
@@ -113,6 +113,7 @@ module.exports = {
       //find user
       const user = await User.findOne({ id: userId });
       res.status(200).json({
+        count: Object.values(user.followers).length,
         followers: Object.values(user.followers),
       });
     } catch (error) {
@@ -132,6 +133,7 @@ module.exports = {
       //find user
       const user = await User.findOne({ id: userId });
       res.status(200).json({
+        count: Object.values(user.following).length,
         following: Object.values(user.following),
       });
     } catch (error) {

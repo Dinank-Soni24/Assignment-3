@@ -21,5 +21,7 @@
 	"post.Liked": "post is like",
 	"post.comment": "post comment successfully",
 	"post.Found": "post found",
-	"user.UpdatePassword": "user password updated"
+	"user.UpdatePassword": "user password updated",
+	"user.notViewFollowers": "at moment user can't see Followers",
+	"user.notViewProfile": "at moment user can't see profile"
 }

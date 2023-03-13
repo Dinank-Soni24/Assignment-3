@@ -105,7 +105,7 @@ module.exports = {
             const token = await sails.helpers.generateToken(
               email,
               password,
-              "1h"
+              "8h"
             );
             // console.log(token);
             // console.log(email);
