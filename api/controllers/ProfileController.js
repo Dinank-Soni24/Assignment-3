@@ -113,7 +113,6 @@ module.exports = {
       //find user
       const user = await User.findOne({ id: userId });
       res.status(200).json({
-        count: user.followers.length,
         followers: Object.values(user.followers),
       });
     } catch (error) {
@@ -133,7 +132,6 @@ module.exports = {
       //find user
       const user = await User.findOne({ id: userId });
       res.status(200).json({
-        count: user.following.length,
         following: Object.values(user.following),
       });
     } catch (error) {
