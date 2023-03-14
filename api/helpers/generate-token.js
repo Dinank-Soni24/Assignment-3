@@ -13,7 +13,7 @@ module.exports = {
       type: 'string',
       required: true
     },
-    password: {
+    id: {
       type: 'string',
       required: true
     },
@@ -39,11 +39,11 @@ module.exports = {
   fn: async function (inputs) {
     try {
 
-      const { email, password, expiresIn } = inputs;
+      const { email, id, expiresIn } = inputs;
       // generate token using jwt
       const token = jwt.sign({
         email,
-        password
+        id
       },
         process.env.JWT_KEY,
         {

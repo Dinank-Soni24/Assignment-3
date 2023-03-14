@@ -11,8 +11,10 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const { title, content, createdBy } = req.body;
-      //check user is exists or not
+      const { title, content } = req.body;
+      console.log(req.userData);
+      const createdBy = req.userData.id;
+      // //check user is exists or not
       await sails.helpers.checkUser(createdBy);
       // Upload the image
       req.file("image").upload(
@@ -37,7 +39,7 @@ module.exports = {
                 content,
                 image: imageFd,
                 createdBy,
-                like: {},
+                // like: {},
                 comment: {},
               }).fetch();
               return res.json({
@@ -50,21 +52,13 @@ module.exports = {
                 error: error,
               });
             }
-            // }
-            // else {
-            //     return res.status(500).json({
-            //         message: {
-            //             message: sails.__(`post.imagenotfound`, { lang })
-            //         }
-            //     });
-            // }
           }
         }
       );
     } catch (error) {
       return res.status(500).json({
         message: sails.__("post.notCreate", { lang: lang }),
-        error: error,
+        error: error + "h",
       });
     }
   },
@@ -72,7 +66,7 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const userId = await req.params.id;
+      const userId = await req.userData.id;
       const postId = await req.body.id;
       //check user is exists or not
       console.log(1);
@@ -86,22 +80,61 @@ module.exports = {
       //find user
       const user = await User.findOne({ id: userId });
       //like or dislike post logic
-      if (post.like[userId] === user.userName) {
-        delete post.like[userId];
-      } else {
-        post.like[userId] = user.userName;
-      }
+      // if (post.like[userId] === user.userName) {
+      //   delete post.like[userId];
+      // } else {
+      //   post.like[userId] = user.userName;
+      // }
       //set the post
-      await Post.updateOne({ id: postId }).set(post);
-      return res.status(200).json({
-        post: {
-          message: sails.__("post.Liked", { lang: lang }),
-        },
-      });
+
+      //find like using userId
+      const like = await Like.findOne({ userName: userId , likes: true });
+
+      if (like) {
+        if (postId === like.post) {
+          const newlike = await Like.updateOne({ id: like.id }, { likes: false });
+          return res.status(200).json({
+            post: {
+              message: sails.__("post.disLiked", { lang: lang }),
+            },
+          });
+        } else {
+          const newlike = await Like.create({
+            likes: true,
+            userName: userId,
+            post: postId
+          });
+          return res.status(200).json({
+            post: {
+              message: sails.__("post.Liked", { lang: lang }),
+            },
+          });
+        }
+      } else {
+        const newlike = await Like.create({
+          likes: true,
+          userName: userId,
+          post: postId
+        });
+        return res.status(200).json({
+          post: {
+            message: sails.__("post.Liked", { lang: lang }),
+          },
+        });
+      }
+
+
+
+      // await Post.updateOne({ id: postId }).set(post);
+      // return res.status(200).json({
+      //   post: {
+      //     message: sails.__("post.Liked", { lang: lang }),
+      //   },
+      // });
     } catch (error) {
       return res.status(500).json({
         message: sails.__("post.notLiked", { lang: lang }),
-        error: error,
+        error: error + 'h',
       });
     }
   },

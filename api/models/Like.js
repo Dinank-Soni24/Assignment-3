@@ -1,5 +1,5 @@
 /**
- * Comment.js
+ * Like.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -13,9 +13,9 @@ module.exports = {
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
 
-    text:
+    likes:
     {
-      type: 'string',
+      type: 'boolean',
       required: true,
     },
 
@@ -23,16 +23,17 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
-    //one-to-many with post(one)
-    onPost:
-    {
-      model: 'post'
-    },
-    //one-to-many with user(one)
+    //one-to-one with user
     userName:
     {
-      model: 'user'
+      model: 'user',
+      unique: true
     },
+    //one-to-many with post
+    post:
+    {
+      model: 'post'
+    }
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

@@ -9,6 +9,10 @@ module.exports = {
 
   attributes: {
 
+    //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
+    //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
+    //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
+
     title:
     {
       type: 'string',
@@ -23,41 +27,41 @@ module.exports = {
     {
       type: 'string',
     },
-    like:
-    {
-      type: 'json',
-    },
-    //one-to-many with user(one)
-    createdBy:
-    {
-      model: 'user'
-    },
+    // like:
+    // {
+    //   type: 'json',
+    // },
     publishedDate:
     {
       type: 'number',
       defaultsTo: Date.now()
+    },
+
+    //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
+    //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
+    //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
+
+    //one-to-many with user(one)
+    createdBy:
+    {
+      model: 'user'
     },
     //one-to-many with comment(many)
     comments:
     {
       collection: 'comment',
       via: 'onPost'
+    },
+    //one-to-many with like (many)
+    like:
+    {
+      collection: 'like',
+      via: 'post'
     }
-
-
-    //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
-    //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
-    //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝
-
-
-    //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
-    //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
-    //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
   },
 

@@ -23,7 +23,7 @@ module.exports.routes = {
     'POST /user/following/:id': 'profileController.following',
 
     'POST /user/post': 'postController.postAdd',
-    'POST /user/:id/like': 'postController.like',
+    'POST /user/like': 'postController.like', //like and dislike if already like a post
     'POST /user/:id/comment': 'postController.comment',
     'GET /post': 'postController.getPost',
 

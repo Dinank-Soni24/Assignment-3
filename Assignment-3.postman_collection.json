@@ -1,0 +1,471 @@
+{
+	"info": {
+		"_postman_id": "0838edc8-e346-466b-b349-2ac6b95afb62",
+		"name": "Assignment-3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "post",
+			"item": [
+				{
+					"name": "createPost",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localUrl}}/post",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "like/unlike post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "6409bde1af7a763c751461c2",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localUrl}}/user/6409bdc4af7a763c751461c0/like",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"6409bdc4af7a763c751461c0",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "comment on post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "640affa853700f28383909e0",
+									"type": "default"
+								},
+								{
+									"key": "comment",
+									"value": "it's nice post ",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localUrl}}/user/640eadb28b25e60b337abd08/comment",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"640eadb28b25e60b337abd08",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all post",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localUrl}}/post",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"post"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "skip",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "get user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{checkAuth}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{localUrl}}/user?skip=2",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "status update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{checkAuth}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "status",
+									"value": "inActive",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localUrl}}/user/status/640afa3b5dd2b22567deb0b8",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"status",
+								"640afa3b5dd2b22567deb0b8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Userpost",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "userProfile",
+			"item": [
+				{
+					"name": "profilepic Update",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "userProfile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "6409667c7c8536090f8cb4cd",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localUrl}}/user/profile",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordUpdate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "password",
+									"value": "1234567",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localUrl}}/user/password/640ac28b792e5e1117ba7155",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"password",
+								"640ac28b792e5e1117ba7155"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userFollwers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer {{checkAuth}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{localUrl}}/user/followers/640eadba8b25e60b337abd09",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"followers",
+								"640eadba8b25e60b337abd09"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userFollowing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localUrl}}",
+							"host": [
+								"{{localUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "follow",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "64099b00ee6a6e271c9a6757",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localUrl}}/user/64099af9ee6a6e271c9a6756/follow",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"64099af9ee6a6e271c9a6756",
+								"follow"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "signIn user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "de",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userName",
+									"value": "dinank1",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "dinank1@soni.com",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "default"
+								},
+								{
+									"key": "profilePic",
+									"type": "file",
+									"src": "/Users/ztlab13/Desktop/Screenshot 2023-02-21 at 5.49.02 PM.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localUrl}}/user/signup",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "dinank1@soni.com",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localUrl}}/user/login",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localUrl}}/user/logout/640abcdeb757a20a435b76c3",
+							"host": [
+								"{{localUrl}}"
+							],
+							"path": [
+								"user",
+								"logout",
+								"640abcdeb757a20a435b76c3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "localUrl",
+			"value": "http://localhost:1337",
+			"type": "default"
+		}
+	]
+}

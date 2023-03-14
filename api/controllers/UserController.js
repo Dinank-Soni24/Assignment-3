@@ -104,23 +104,18 @@ module.exports = {
           try {
             const token = await sails.helpers.generateToken(
               email,
-              password,
+              user.id,
               "8h"
             );
-            // console.log(token);
-            // console.log(email);
             const userUpdate = await User.updateOne(
               { email },
               { token: token }
             );
-            // console.log(userUpdate);
-            // console.log(5);
             return res.status(200).json({
               message: sails.__("user.found", { lang: lang }),
               token: token,
             });
           } catch (error) {
-            // console.log(3);
             return res.status(422).json({
               message: sails.__("user.notUpdate", { lang: lang }),
               error: error,

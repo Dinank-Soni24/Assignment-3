@@ -23,5 +23,7 @@
 	"post.Found": "post found",
 	"user.UpdatePassword": "user password updated",
 	"user.notViewFollowers": "at moment user can't see Followers",
-	"user.notViewProfile": "at moment user can't see profile"
+	"user.notViewProfile": "at moment user can't see profile",
+	"post.notComment": "comment on post unSuccessfully",
+	"post.disLiked": "dislike the post"
 }

@@ -11,7 +11,12 @@ const { Roles, Status } = sails.config.constant;
 module.exports = {
 
   attributes: {
-    userName: 
+
+    //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
+    //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
+    //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
+
+    userName:
     {
       type: 'string',
       required: true,
@@ -21,7 +26,8 @@ module.exports = {
     {
       type: 'string',
       required: true,
-      unique: true
+      unique: true,
+      isEmail: true
     },
     password:
     {
@@ -47,39 +53,44 @@ module.exports = {
     {
       type: 'json',
     },
+    token:
+    {
+      type: 'string',
+    },
+    status:
+    {
+      type: 'string',
+      isIn: [Status.Active, Status.inActive],
+      defaultsTo: Roles.Active,
+    },
+
+    //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
+    //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
+    //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
+
     //one-to-many with post(many)
     posts:
     {
       collection: 'post',
       via: 'createdBy',
     },
-    token:
+    //one-to-many with comment(many)
+    comments:
     {
-      type: 'string',
+      collection: 'comment',
+      via: 'userName',
     },
-    status: 
+    //one-to-one with like
+    like:
     {
-      type: 'string',
-      isIn: [Status.Active, Status.inActive],
-      defaultsTo: Roles.Active,
+      collection:'like',
+      via: 'userName'
     }
-    
-
-
-
-    //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
-    //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
-    //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
 
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝
-
-
-    //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
-    //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
-    //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
   },
 
