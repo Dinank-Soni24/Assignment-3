@@ -22,16 +22,16 @@ module.exports.policies = {
   // '*': true,
 
   postController: {
-    '*': ['isUser','isLoggedIn']
+    '*': ['isLoggedIn','isUser']
   },
   adminController: {
-    '*': 'isAdmin'
+    '*': ['isLoggedIn','isAdmin']
   },
   UserController: {
     'logout': 'isLoggedIn'
   },
   ProfileController: {
-    '*': ['isUser','isLoggedIn']
+    '*': ['isLoggedIn','isUser']
   }
 
 };
