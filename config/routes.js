@@ -11,25 +11,25 @@
 
 module.exports.routes = {
 
-    'POST /user/signup': 'UserController.signup',
-    'POST /user/login': 'UserController.login',
-    'POST /user/logout': 'UserController.logout',
+    'POST /user/signup': 'UserController.signup', //user signup
+    'POST /user/login': 'UserController.login', //user/admin login
+    'POST /user/logout': 'UserController.logout', //user/admin logout
 
-    'POST /user/profile': 'profileController.profile',
-    'POST /user/password/:id': 'profileController.passwordUpdate',
-    'POST /user/profile/:id/picture': 'profileController.picUpdate',
-    'POST /user/:id/follow': 'profileController.follow',
-    'POST /user/followers/:id': 'profileController.followers',
-    'POST /user/following/:id': 'profileController.following',
+    'POST /user/profile': 'profileController.profile', //search profile for particular user
+    'POST /user/password': 'profileController.passwordUpdate', //update user password
+    'POST /user/profile/picture': 'profileController.picUpdate', //update user profilePicture
+    'POST /user/follow': 'profileController.follow', // follow unFollow user
+    'POST /user/followers': 'profileController.followers', // view followers
+    'POST /user/following': 'profileController.following', // view following
 
-    'POST /user/post': 'postController.postAdd',
+    'POST /user/post/create': 'postController.postAdd', //create post
     'POST /user/like': 'postController.like', //like and dislike if already like a post
-    'POST /user/:id/comment': 'postController.comment',
-    'GET /post': 'postController.getPost',
+    'POST /user/comment': 'postController.comment', //add comment on post
+    'GET /post': 'postController.getPost', //get all post
 
-    'GET /user': 'adminController.getUser',
-    'POST /user/status/:id': 'adminController.status',
-    'POSt /user/:id/post': 'adminController.userPost'
+    'GET /user': 'adminController.getUser', // get all user
+    'POST /user/status': 'adminController.status', // update user status
+    'POST /user/post': 'adminController.userPost' // get all  post from specific user
 
 
 };

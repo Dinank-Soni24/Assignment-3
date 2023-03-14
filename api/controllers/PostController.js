@@ -13,7 +13,7 @@ module.exports = {
     try {
       const { title, content } = req.body;
       console.log(req.userData);
-      const createdBy = req.userData.id;
+      const createdBy = await req.userData.id;
       // //check user is exists or not
       await sails.helpers.checkUser(createdBy);
       // Upload the image
@@ -40,8 +40,8 @@ module.exports = {
                 image: imageFd,
                 createdBy,
                 // like: {},
-                comment: {},
-              }).fetch();
+                // comment: {},
+              });
               return res.json({
                 message: sails.__(`post.created`, { lang }),
                 user: newPost,
@@ -49,7 +49,7 @@ module.exports = {
             } catch (error) {
               return res.status(500).json({
                 message: sails.__("post.notCreate", { lang: lang }),
-                error: error,
+                error: error+'j',
               });
             }
           }
@@ -69,25 +69,15 @@ module.exports = {
       const userId = await req.userData.id;
       const postId = await req.body.id;
       //check user is exists or not
-      console.log(1);
       await sails.helpers.checkUser(userId);
       //check post is exists or not
-      console.log(2);
       await sails.helpers.checkPost(postId);
-      console.log(3);
       //find post
       const post = await Post.findOne({ id: postId });
       //find user
       const user = await User.findOne({ id: userId });
-      //like or dislike post logic
-      // if (post.like[userId] === user.userName) {
-      //   delete post.like[userId];
-      // } else {
-      //   post.like[userId] = user.userName;
-      // }
-      //set the post
 
-      //find like using userId
+      //find like using userId and likes
       const like = await Like.findOne({ userName: userId , likes: true });
 
       if (like) {
@@ -95,6 +85,7 @@ module.exports = {
           const newlike = await Like.updateOne({ id: like.id }, { likes: false });
           return res.status(200).json({
             post: {
+              like: newlike,
               message: sails.__("post.disLiked", { lang: lang }),
             },
           });
@@ -106,6 +97,7 @@ module.exports = {
           });
           return res.status(200).json({
             post: {
+              like: newlike,
               message: sails.__("post.Liked", { lang: lang }),
             },
           });
@@ -118,6 +110,7 @@ module.exports = {
         });
         return res.status(200).json({
           post: {
+            like: newlike,
             message: sails.__("post.Liked", { lang: lang }),
           },
         });
@@ -142,7 +135,7 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const userId = await req.params.id;
+      const userId = await req.userData.id;
       const postId = await req.body.id;
       const comments = await req.body.comment;
       //check user is exists or not
@@ -157,6 +150,7 @@ module.exports = {
       const newComment = await Comment.create({
         text: `@${user.userName}  ${comments}`,
         onPost: postId,
+        userName: userId,
       }).fetch();
       return res.status(200).json({
         post: {
@@ -181,7 +175,8 @@ module.exports = {
         sort: "publishedDate DESC",
         limit: limit,
         skip: skip,
-      });
+      }).populate('like',{likes: true})
+      .populate('comments');
       res.status(200).json({
         message: sails.__("post.Found", { lang: lang }),
         count: post.length,

@@ -7,13 +7,14 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 const bcrypt = require("bcrypt");
+const { Roles, Status } = sails.config.constant;
 
 module.exports = {
   signUp: async (req, res) => {
     try {
       // Get the user's preferred language
       const lang = req.getLocale();
-      const { userName, email, password, roles } = req.body;
+      const { userName, email, password} = req.body;
       // Upload the profilePic image
       req.file("profilePic").upload(
         {
@@ -41,8 +42,8 @@ module.exports = {
                 profilePic: avatarFd,
                 followers: {},
                 following: {},
-                roles,
-                status: "Active",
+                roles: Roles.User,
+                status: Status.Active,
               }).fetch();
               return res.status(201).json({
                 message: sails.__(`user.created`, { lang }),
@@ -82,14 +83,14 @@ module.exports = {
       console.log(user);
       if (!user) {
         return res.status(404).json({
-          log: console.log(1),
+          // log: console.log(1),
           message: {
             message: sails.__(`user.notfound`, { lang }),
           },
         });
       } else if (user.status === "inActive") {
         return res.status(403).json({
-          log: console.log(2),
+          // log: console.log(2),
           message: {
             message: sails.__(`user.inActive`, { lang }),
           },
@@ -123,7 +124,7 @@ module.exports = {
           }
         } else {
           return res.status(404).json({
-            log: console.log(1),
+            // log: console.log(1),
             message: {
               message: sails.__(`user.notfound`, { lang }),
             },

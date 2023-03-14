@@ -17,7 +17,9 @@ module.exports = {
         where: { roles: "u" },
         limit: limit,
         skip: skip,
+        select: ['userName','email','roles','profilePic','followers','following','status']
       });
+      console.log(user);
       res.status(200).json({
         message: sails.__("user.Found", { lang: lang }),
         count: user.length,
@@ -26,7 +28,7 @@ module.exports = {
     } catch (error) {
       return res.status(404).json({
         message: sails.__("user.NotFound", { lang: lang }),
-        error: error,
+        error: error+'h',
       });
     }
   },
@@ -34,7 +36,7 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const userId = await req.params.id;
+      const userId = await req.body.id;
       const status = await req.body.status;
       //check user is exists or not        
       await sails.helpers.checkUser(userId);
@@ -55,13 +57,14 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const userId = await req.params.id;
+      const userId = await req.body.id;
       //check user is exists or not            
       await sails.helpers.checkUser(userId);
       const post = await Post.find({
         where: { createdBy: userId },
         sort: "publishedDate DESC",
-      });
+      }).populate('like',{likes: true})
+      .populate('comments');
       return res.status(200).json({
         post: {
           message: sails.__("user.postsFound", { lang: lang }),

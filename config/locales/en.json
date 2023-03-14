@@ -25,5 +25,9 @@
 	"user.notViewFollowers": "at moment user can't see Followers",
 	"user.notViewProfile": "at moment user can't see profile",
 	"post.notComment": "comment on post unSuccessfully",
-	"post.disLiked": "dislike the post"
+	"post.disLiked": "dislike the post",
+	"post.notFound": "post is not found",
+	"user.profileFound": "user profile is found",
+	"user.follow/unFollow": "user follow unFollow successfully",
+	"user.NotFound": "user.NotFound"
 }

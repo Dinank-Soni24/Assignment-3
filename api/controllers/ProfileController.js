@@ -16,7 +16,7 @@ module.exports = {
       await sails.helpers.checkUser(id);
       const user = await User.findOne({ id });
       return res.status(200).json({
-        message: sails.__(`user.found`, { lang }),
+        message: sails.__(`user.profileFound`, { lang }),
         user: {
           userName: user.userName,
           email: user.email,
@@ -37,7 +37,7 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const id = req.params.id;
+      const id = req.userData.id;
       const password = req.body.password;
       // const user = await User.findOne({ id: id });
       //check user is exists or not
@@ -59,7 +59,7 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const id = req.params.id;
+      const id = req.userData.id;
       //check user is exists or not
       await sails.helpers.checkUser(id);
       req.file("profilePic").upload(
@@ -107,7 +107,7 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const userId = await req.params.id;
+      const userId = await req.userData.id;
       //check user is exists or not
       await sails.helpers.checkUser(userId);
       //find user
@@ -127,7 +127,7 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const userId = await req.params.id;
+      const userId = await req.userData.id;
       //check user is exists or not
       await sails.helpers.checkUser(userId);
       //find user
@@ -147,39 +147,42 @@ module.exports = {
     // Get the user's preferred language
     const lang = req.getLocale();
     try {
-      const followedUserId = await req.params.id;
-      const followerUserId = await req.body.id;
-      //check user is exists or not
-      await sails.helpers.checkUser(followedUserId);
+      const followerUserId = await req.userData.id;
+      const followedUserId = await req.body.id;
+
       //check user is exists or not
       await sails.helpers.checkUser(followerUserId);
-      // find the followedUser using followedUserId
-      const followedUser = await User.findOne({ id: followedUserId });
-      // find the followerUser using followerUserId
-      const followerUser = await User.findOne({ id: followerUserId });
+      //check user is exists or not
+      await sails.helpers.checkUser(followedUserId);
+
+      // find the followedUser using followerUserId
+      const followedUser = await User.findOne({ id: followerUserId });
+      // find the followerUser using followedUserId
+      const followerUser = await User.findOne({ id: followedUserId });
       // console.log(followedUser);
+
       //follow and unFollow logic
-      if (followedUser.following[followerUserId] === followerUser.userName) {
-        delete followedUser.following[followerUserId];
+      if (followedUser.following[followedUserId] === followerUser.userName) {
+        delete followedUser.following[followedUserId];
       } else {
         // add followerUser data in followedUser
-        followedUser.following[followerUserId] = followerUser.userName;
+        followedUser.following[followedUserId] = followerUser.userName;
       }
       //set the followedUser
-      await User.updateOne({ id: followedUserId }).set(followedUser);
+      await User.updateOne({ id: followerUserId }).set(followedUser);
       //follow and unFollow logic
-      if (followerUser.followers[followedUserId] === followedUser.userName) {
+      if (followerUser.followers[followerUserId] === followedUser.userName) {
         // console.log(2);
-        delete followerUser.followers[followedUserId];
+        delete followerUser.followers[followerUserId];
       } else {
         // add followerUser data in followedUser
-        followerUser.followers[followedUserId] = followedUser.userName;
+        followerUser.followers[followerUserId] = followedUser.userName;
       }
       //set the followerUser
-      await User.updateOne({ id: followerUserId }).set(followerUser);
+      await User.updateOne({ id: followedUserId }).set(followerUser);
       return res.status(200).json({
         user: {
-          message: "follow/unFollow successfully",
+          message: sails.__("user.follow/unFollow", { lang: lang })
         },
       });
     } catch (error) {
