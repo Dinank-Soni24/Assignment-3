@@ -45,14 +45,14 @@ module.exports = {
       isIn: [Roles.Admin, Roles.User],
       defaultsTo: Roles.User
     },
-    followers:
-    {
-      type: 'json',
-    },
-    following:
-    {
-      type: 'json',
-    },
+    // followers:
+    // {
+    //   type: 'json',
+    // },
+    // following:
+    // {
+    //   type: 'json',
+    // },
     token:
     {
       type: 'string',
@@ -85,7 +85,25 @@ module.exports = {
     {
       collection:'like',
       via: 'userName'
+    },
+    //one-to-many with following
+    following:
+    {
+      collection:'following',
+      via: 'userId'
+    },
+    //one-to-many with follower
+    follower:
+    {
+      collection:'follower',
+      via:'userId'
     }
+    // //many-to-many with following
+    // followedId:
+    // {
+    //   collection:'following',
+    //   via: 'followed'
+    // }
 
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗

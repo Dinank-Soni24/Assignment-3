@@ -5,7 +5,7 @@
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
-
+const bcrypt = require("bcrypt");
 module.exports = {
   profile: async (req, res) => {
     // Get the user's preferred language
@@ -14,22 +14,36 @@ module.exports = {
       const id = await req.body.id;
       //check user is exists or not
       await sails.helpers.checkUser(id);
-      const user = await User.findOne({ id });
+      const user = await User.findOne({ id })
+        .populate("follower", { follower: true })
+        .populate("following", { following: true });
       return res.status(200).json({
         message: sails.__(`user.profileFound`, { lang }),
         user: {
           userName: user.userName,
           email: user.email,
           profilePic: user.profilePic,
-          roles: user.roles,
-          followers: Object.values(user.followers).length,
-          following: Object.values(user.following).length,
+          // roles: user.roles,
+          // followers: Object.values(user.followers).length,
+          // following: Object.values(user.following).length,
+          followers: user.follower.map((follower) => {
+            return {
+              followerId: follower.followerUserId,
+              follower: follower.follower
+            };
+          }),
+          following: user.following.map((following) => {
+            return {
+              followedId: following.followedUserId,
+              following: following.following
+            };
+          }),
         },
       });
     } catch (error) {
       return res.status(500).json({
         message: sails.__("user.notViewProfile", { lang: lang }),
-        error: error,
+        error: error + "h",
       });
     }
   },
@@ -40,9 +54,10 @@ module.exports = {
       const id = req.userData.id;
       const password = req.body.password;
       // const user = await User.findOne({ id: id });
+      const hashedPassword = await bcrypt.hash(password, 10);
       //check user is exists or not
       await sails.helpers.checkUser(id);
-      await User.updateOne({ id: id }, { password: password });
+      await User.updateOne({ id: id }, { password: hashedPassword });
       return res.status(200).json({
         user: {
           message: sails.__("user.UpdatePassword", { lang: lang }),
@@ -111,10 +126,10 @@ module.exports = {
       //check user is exists or not
       await sails.helpers.checkUser(userId);
       //find user
-      const user = await User.findOne({ id: userId });
+      const userFollower = await Follower.find({ userId: userId, follower: true });
       res.status(200).json({
-        count: Object.values(user.followers).length,
-        followers: Object.values(user.followers),
+        // count: Object.values(user.followers).length,
+        followers: userFollower,
       });
     } catch (error) {
       return res.status(500).json({
@@ -131,10 +146,10 @@ module.exports = {
       //check user is exists or not
       await sails.helpers.checkUser(userId);
       //find user
-      const user = await User.findOne({ id: userId });
+      const userFollowing = await Following.find({ userId: userId, following: true });
       res.status(200).json({
-        count: Object.values(user.following).length,
-        following: Object.values(user.following),
+        // count: Object.values(user.following).length,
+        following: userFollowing,
       });
     } catch (error) {
       return res.status(500).json({
@@ -161,34 +176,81 @@ module.exports = {
       const followerUser = await User.findOne({ id: followedUserId });
       // console.log(followedUser);
 
-      //follow and unFollow logic
-      if (followedUser.following[followedUserId] === followerUser.userName) {
-        delete followedUser.following[followedUserId];
-      } else {
-        // add followerUser data in followedUser
-        followedUser.following[followedUserId] = followerUser.userName;
-      }
-      //set the followedUser
-      await User.updateOne({ id: followerUserId }).set(followedUser);
-      //follow and unFollow logic
-      if (followerUser.followers[followerUserId] === followedUser.userName) {
-        // console.log(2);
-        delete followerUser.followers[followerUserId];
-      } else {
-        // add followerUser data in followedUser
-        followerUser.followers[followerUserId] = followedUser.userName;
-      }
-      //set the followerUser
-      await User.updateOne({ id: followedUserId }).set(followerUser);
-      return res.status(200).json({
-        user: {
-          message: sails.__("user.follow/unFollow", { lang: lang })
-        },
+      const follower = await Follower.findOne({
+        userId: followedUserId,
+        followerUserId: followerUserId,
+        follower: true,
       });
+
+      const following = await Following.findOne({
+        userId: followerUserId,
+        followedUserId: followedUserId,
+        following: true,
+      });
+
+      // check follower and following is coming then unFollow
+      if (follower && following) {
+        const updateFollower = await Follower.updateOne(
+          { id: follower.id },
+          { follower: false }
+        );
+        const updateFollowing = await Following.updateOne(
+          { id: following.id },
+          { following: false }
+        );
+
+        return res.status(200).json({
+          user: {
+            message: sails.__("user.unFollow", { lang: lang }),
+            follower: updateFollower,
+            following: updateFollowing,
+          },
+        });
+      } else {
+        //follow and unFollow logic
+        const newFollower = await Follower.create({
+          userId: followedUserId,
+          followerUserId: followerUserId,
+          follower: true,
+        });
+
+        //follow and unFollow logic
+        const newFollowing = await Following.create({
+          userId: followerUserId,
+          followedUserId: followedUserId,
+          following: true,
+        });
+        return res.status(201).json({
+          user: {
+            message: sails.__("user.follow", { lang: lang }),
+            follower: newFollower,
+            following: newFollowing,
+          },
+        });
+      }
+
+      // if (followedUser.following[followedUserId] === followerUser.userName) {
+      //   delete followedUser.following[followedUserId];
+      // } else {
+      //   // add followerUser data in followedUser
+      //   followedUser.following[followedUserId] = followerUser.userName;
+      // }
+      // //set the followedUser
+      // await User.updateOne({ id: followerUserId }).set(followedUser);
+      // //follow and unFollow logic
+      // if (followerUser.followers[followerUserId] === followedUser.userName) {
+      //   // console.log(2);
+      //   delete followerUser.followers[followerUserId];
+      // } else {
+      //   // add followerUser data in followedUser
+      //   followerUser.followers[followerUserId] = followedUser.userName;
+      // }
+      // //set the followerUser
+      // await User.updateOne({ id: followedUserId }).set(followerUser);
     } catch (error) {
       return res.status(500).json({
         message: sails.__("user.notFollow", { lang: lang }),
-        error: error,
+        error: error + "h",
       });
     }
   },

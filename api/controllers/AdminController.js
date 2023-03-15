@@ -17,7 +17,6 @@ module.exports = {
         where: { roles: "u" },
         limit: limit,
         skip: skip,
-        select: ['userName','email','roles','profilePic','followers','following','status']
       });
       console.log(user);
       res.status(200).json({

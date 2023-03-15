@@ -40,8 +40,8 @@ module.exports = {
                 email,
                 password: hashedPassword,
                 profilePic: avatarFd,
-                followers: {},
-                following: {},
+                // followers: {},
+                // following: {},
                 roles: Roles.User,
                 status: Status.Active,
               }).fetch();

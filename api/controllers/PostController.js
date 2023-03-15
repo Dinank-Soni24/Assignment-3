@@ -49,7 +49,7 @@ module.exports = {
             } catch (error) {
               return res.status(500).json({
                 message: sails.__("post.notCreate", { lang: lang }),
-                error: error+'j',
+                error: error + "j",
               });
             }
           }
@@ -78,11 +78,18 @@ module.exports = {
       const user = await User.findOne({ id: userId });
 
       //find like using userId and likes
-      const like = await Like.findOne({ userName: userId , likes: true });
+      const like = await Like.findOne({
+        userName: userId,
+        post: postId,
+        likes: true,
+      });
 
       if (like) {
         if (postId === like.post) {
-          const newlike = await Like.updateOne({ id: like.id }, { likes: false });
+          const newlike = await Like.updateOne(
+            { id: like.id },
+            { likes: false }
+          );
           return res.status(200).json({
             post: {
               like: newlike,
@@ -93,9 +100,9 @@ module.exports = {
           const newlike = await Like.create({
             likes: true,
             userName: userId,
-            post: postId
+            post: postId,
           });
-          return res.status(200).json({
+          return res.status(201).json({
             post: {
               like: newlike,
               message: sails.__("post.Liked", { lang: lang }),
@@ -106,17 +113,15 @@ module.exports = {
         const newlike = await Like.create({
           likes: true,
           userName: userId,
-          post: postId
+          post: postId,
         });
-        return res.status(200).json({
+        return res.status(201).json({
           post: {
             like: newlike,
             message: sails.__("post.Liked", { lang: lang }),
           },
         });
       }
-
-
 
       // await Post.updateOne({ id: postId }).set(post);
       // return res.status(200).json({
@@ -127,7 +132,7 @@ module.exports = {
     } catch (error) {
       return res.status(500).json({
         message: sails.__("post.notLiked", { lang: lang }),
-        error: error + 'h',
+        error: error + "h",
       });
     }
   },
@@ -175,8 +180,9 @@ module.exports = {
         sort: "publishedDate DESC",
         limit: limit,
         skip: skip,
-      }).populate('like',{likes: true})
-      .populate('comments');
+      })
+        .populate("like", { likes: true })
+        .populate("comments");
       res.status(200).json({
         message: sails.__("post.Found", { lang: lang }),
         count: post.length,
