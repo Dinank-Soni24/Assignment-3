@@ -88,7 +88,7 @@ module.exports = {
             message: sails.__(`user.notfound`, { lang }),
           },
         });
-      } else if (user.status === "inActive") {
+      } else if (user.status === Status.inActive) {
         return res.status(403).json({
           // log: console.log(2),
           message: {
