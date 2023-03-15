@@ -29,9 +29,9 @@
 	"post.notFound": "post is not found",
 	"user.profileFound": "user profile is found",
 	"user.follow/unFollow": "user follow unFollow successfully",
-	"user.NotFound": "user.NotFound",
-	"user.notFollow": "user.notFollow",
-	"user.follow": "user.follow",
-	"user.unFollow": "user.unFollow",
-	"user.notViewFollowing": "user.notViewFollowing"
+	"user.NotFound": "user is not Found",
+	"user.notFollow": "user is not Follow at moment",
+	"user.follow": "user is following now",
+	"user.unFollow": "user is unFollow now",
+	"user.notViewFollowing": "user not view following now"
 }
